@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Player from '../types/Player';
 import fetchPlayerByName from './playerThunks/fetchPlayerByName';
+import fetchPlayers from './playerThunks/fetchPlayers';
+import createPlayer from './playerThunks/createPlayer';
 interface PlayerState {
   player: Player | null;
   players: Player[];
@@ -40,6 +42,14 @@ const playerSlice = createSlice({
     builder.addCase(fetchPlayerByName.rejected, (state, action) => {
       state.fetchPlayerByNameStatus = 'rejected';
       state.fetchPlayerByNameError = action.payload as string;
+    });
+
+    builder.addCase(fetchPlayers.fulfilled, (state, action: PayloadAction<Player[]>) => {
+      state.players = action.payload;
+    });
+
+    builder.addCase(createPlayer.fulfilled, (state, action: PayloadAction<Player[]>) => {
+      state.players = action.payload;
     });
   },
 });

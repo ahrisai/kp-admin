@@ -8,156 +8,57 @@ import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import MainTable from '../components/MainTable';
+import FilterBar from '../components/FilterBar';
+import { Pagination } from '@mui/material';
 
 const HomePage = () => {
-  const user = useSelector((state: RootState) => state.userReducer.user);
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const openGameProfileModal = () => {
-    document.documentElement.style.overflowY = 'hidden';
-    dispatch(changeGameProfileState(true));
-  };
-  const [isGameProfileExist, setIsGameProfileExist] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (user?.cs2_data || user?.valorant_data) setIsGameProfileExist(true);
-
-    document.documentElement.style.overflowY = 'visible';
-    if (Cookies.get('_csData')) {
-      const _csData = Cookies.get('_csData');
-      if (_csData === 'exist') {
-        Swal.fire({
-          icon: 'warning',
-          title: `Ошибочка`,
-          text: `Такой аккаунт уже привязан`,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      }
-      if (_csData === 'noFaceit') {
-        Swal.fire({
-          icon: 'question',
-          title: `Что-то не так`,
-          text: `Похоже ваш steam аккаунт не привязан к faceit`,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      }
-    }
-    Cookies.remove('_csData');
-  }, []);
-
   return (
     <>
-      <main>
-        <MatchesBar />
-        <Container>
-          <MainContent>
-            <Modal />
-            <ContentButtons>
-              <ContentLink
-                onClick={() => {
-                  navigate(isGameProfileExist ? '/players' : '/');
-                }}
-              >
-                Find Players{' '}
-              </ContentLink>
-              <ContentLink
-                onClick={() => {
-                  navigate(isGameProfileExist ? '/teams' : '/');
-                }}
-              >
-                Find Your Team
-              </ContentLink>
-              <GameProfileButton onClick={openGameProfileModal}>Create Game Profile</GameProfileButton>
-            </ContentButtons>
-            <ContentNews></ContentNews>
-          </MainContent>
-        </Container>
-      </main>
+      <Main>
+        <MainContent>
+          <SideNavbar>
+            <NavLink to={'/players'}>PLAYERS</NavLink>
+            <NavLink to={'/maps'}>MAPS</NavLink>
+            <NavLink to={'/roles'}>ROLES</NavLink>
+          </SideNavbar>
+          <MainTable />
+          <FilterBar />
+        </MainContent>
+        <Pagination color='secondary' />
+      </Main>
     </>
   );
 };
 
-const MatchesBar = styled.div`
-  width: 100%;
-  height: 100px;
+const Main = styled.main`
   background-color: #333;
 `;
 
-const MainContent = styled.section`
-  width: 100%;
-  height: 70vh;
+const MainContent = styled.div`
+  height: 80vh;
   display: flex;
   justify-content: space-between;
-  padding: 40px 0;
 `;
 
-const ContentButtons = styled.div`
-  width: 48%;
-
+const SideNavbar = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-`;
-const ContentNews = styled.div`
-  width: 48%;
-  background-color: #575757;
-`;
-const ContentLink = styled.div`
-  display: flex;
-  justify-content: center;
   align-items: center;
-
-  height: 70px;
-  font-weight: 400;
-  font-size: 18px;
-  font-family: montserrat;
-  text-transform: uppercase;
-  color: #fff;
-  padding: 5px 16px;
-  border-radius: 4px;
-  background: radial-gradient(circle at 20% 100%, rgb(145, 43, 36) 30%, rgb(224, 6, 6) 200%);
-
-  background-size: 100%;
-  text-align: center;
-
-  width: 300px;
-  border: 1px solid #000000;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.03);
-    background-size: 150%;
-  }
+  background-color: aliceblue;
+  height: 100%;
+  width: 9%;
 `;
-const GameProfileButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-  height: 70px;
-  font-weight: 400;
-  font-size: 18px;
-  font-family: montserrat;
-  text-transform: uppercase;
-  color: #fff;
-  padding: 5px 16px;
-  border-radius: 4px;
-  background: radial-gradient(circle at 10% 100%, rgb(177, 139, 16) 30%, rgb(0, 0, 0) 200%);
-
-  background-size: 100%;
-  text-align: center;
-
-  width: 300px;
-  border: 1px solid #000000;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
+const NavLink = styled(Link)`
+  font-size: 20px;
+  text-decoration: none;
+  color: #000;
+  font-weight: 700;
   &:hover {
-    transform: scale(1.03);
-    background-size: 150%;
+    color: #757575;
   }
 `;
 

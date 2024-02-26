@@ -7,6 +7,7 @@ import { changeLoginState, changeRegState } from '../../redux/modalSlice';
 import fetchUser from '../../redux/userThunks/fetchUser';
 import { ErrorAlert } from './RegistrationForm';
 import { useEffect } from 'react';
+import Swal from 'sweetalert2';
 
 interface IFormInput {
   password: string;
@@ -24,7 +25,15 @@ const LoginForm = () => {
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    await dispatch(fetchUser({ nickname: data.nickname, password: data.password }));
+    const login = import.meta.env.VITE_ADMIN_LOGIN;
+    const password = import.meta.env.VITE_ADMIN_PASSWORD;
+    if (data.nickname !== login || data.password !== password) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'wrong login or password',
+      });
+    } else await dispatch(fetchUser({ nickname: data.nickname, password: data.password }));
   };
   useEffect(() => {
     if (loginStatus === 'fulfilled') {
@@ -79,13 +88,14 @@ const LoginForm = () => {
 };
 
 const FormContainer = styled.div`
-  width: 100%;
   padding: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   row-gap: 20px;
+  background-color: #a0a0a0;
+  border-radius: 15px;
 `;
 
 const FormButtons = styled.div`
