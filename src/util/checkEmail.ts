@@ -1,5 +1,5 @@
 export const validateEmail = (email: string) => {
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
   if (!emailRegex.test(email)) {
     console.log(email);
     return true;

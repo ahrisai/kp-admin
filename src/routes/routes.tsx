@@ -4,7 +4,6 @@ import Loader from '../components/Loader';
 
 import { Navigate } from 'react-router-dom';
 const HomePage = lazy(() => import('../pages/HomePage'));
-const ProfilePage = lazy(() => import('../pages/ProfilePage'));
 
 export const privateRoutes = [
   {

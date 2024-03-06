@@ -4,10 +4,11 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState, useAppDispatch } from '../redux';
 import { changeGameProfileState, changeLoginState, changeRegState } from '../redux/modalSlice';
-import LoginForm from './AuthForms/LoginForm';
 import RegistrationForm from './AuthForms/RegistrationForm';
 import GameChoiceForm from './GameChoiceForm';
 import LoaderBackground from './UI/LoaderBackground';
+import Cs2DataView from './Cs2DataView';
+import { setPlayer } from '../redux/playerSlice';
 interface ModalStatus {
   $active: string;
 }
@@ -30,7 +31,10 @@ const Modal = () => {
     setIsActive('false');
     setTimeout(() => {
       if (regIsActive) dispatch(changeRegState(false));
-      if (loginIsActive) dispatch(changeLoginState(false));
+      if (loginIsActive) {
+        dispatch(setPlayer(null));
+        dispatch(changeLoginState(false));
+      }
       if (gameChoiceIsActive) dispatch(changeGameProfileState(false));
     }, 500);
   };
@@ -66,7 +70,7 @@ const Modal = () => {
           </>
         )}
 
-        {loginIsActive && <LoginForm />}
+        {loginIsActive && <Cs2DataView />}
         {regIsActive && <RegistrationForm />}
         {gameChoiceIsActive && <GameChoiceForm />}
       </Content>
@@ -97,7 +101,7 @@ const Content = styled.div<ModalStatus>`
   position: relative;
   padding: 20px;
   border-radius: 12px;
-  background-color: #e8e8e8;
+  background-color: #080808;
   min-width: 200px;
   min-height: 200px;
   max-width: 450px;
@@ -118,6 +122,7 @@ const CloseCross = styled.img`
   top: 0;
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
+  filter: invert(1);
   &:hover {
     transform: scale(1.3);
   }

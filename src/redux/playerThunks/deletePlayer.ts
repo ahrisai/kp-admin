@@ -1,26 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { RootState } from '..';
-import { PlayersWithPages } from '../../types/PlayersWithPages';
-
+import Player from '../../types/Player';
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
-export default createAsyncThunk('usersReducer/fetchAllPlayers', async (_, { rejectWithValue, getState }) => {
-  const state: RootState = getState() as RootState;
-  const { filter, sort, cs2_data, desc, user_avatar, gender, currentPage, searchQuery, searchFilter } = state.playerReducer;
-
+export default createAsyncThunk('usersReducer/deletePlayerById', async (id: number, { rejectWithValue }) => {
   const response = axios
-    .get<PlayersWithPages>(`${baseUrl}/fetchAllPlayers`, {
+
+    .delete<Player[]>(`${baseUrl}/deletePlayerById`, {
       params: {
-        filter,
-        sort,
-        cs2_data,
-        desc,
-        user_avatar,
-        gender,
-        page: currentPage,
-        searchFilter,
-        searchQuery,
+        id,
       },
       withCredentials: true,
     })

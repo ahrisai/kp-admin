@@ -1,19 +1,17 @@
 import styled from 'styled-components';
-import Container from '../components/Container';
-import Modal from '../components/Modal';
-import { RootState, useAppDispatch } from '../redux';
-import { changeGameProfileState } from '../redux/modalSlice';
-import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
-import Swal from 'sweetalert2';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import MainTable from '../components/MainTable';
 import FilterBar from '../components/FilterBar';
 import { Pagination } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../redux';
+import { setCurrentPage } from '../redux/playerSlice';
 
 const HomePage = () => {
+  const currentPage = useSelector((state: RootState) => state.playerReducer.currentPage);
+  const totalPages = useSelector((state: RootState) => state.playerReducer.totalPages);
+  const dispatch = useAppDispatch();
+
   return (
     <>
       <Main>
@@ -26,12 +24,27 @@ const HomePage = () => {
           <MainTable />
           <FilterBar />
         </MainContent>
-        <Pagination color='secondary' />
+        <PaginationContainer>
+          <Pagination
+            color='secondary'
+            count={totalPages}
+            page={currentPage}
+            onChange={(_, value: number) => {
+              dispatch(setCurrentPage(value));
+            }}
+          />
+        </PaginationContainer>
       </Main>
     </>
   );
 };
-
+const PaginationContainer = styled.div`
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
 const Main = styled.main`
   background-color: #333;
 `;

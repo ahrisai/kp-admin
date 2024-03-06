@@ -9,7 +9,7 @@ const MainTable = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (location.pathname === '/players') {
-      dispatch(fetchPlayers('asc'));
+      dispatch(fetchPlayers());
     }
     if (location.pathname === '/maps') {
       //dispatch(fetchPlayers)

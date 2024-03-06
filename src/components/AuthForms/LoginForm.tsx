@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState, useAppDispatch } from '../../redux';
-import { changeLoginState, changeRegState } from '../../redux/modalSlice';
+import { changeLoginState } from '../../redux/modalSlice';
 import fetchUser from '../../redux/userThunks/fetchUser';
 import { ErrorAlert } from './RegistrationForm';
 import { useEffect } from 'react';
@@ -41,11 +41,6 @@ const LoginForm = () => {
     }
   }, [loginStatus]);
 
-  const switchToRegistration = () => {
-    dispatch(changeLoginState(false));
-    dispatch(changeRegState(true));
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormContainer>
@@ -80,7 +75,6 @@ const LoginForm = () => {
 
         <FormButtons>
           <LoginButton type='submit'>Welcome back</LoginButton>
-          <RegButton onClick={switchToRegistration}>Sign Up</RegButton>
         </FormButtons>
       </FormContainer>
     </form>
@@ -123,19 +117,6 @@ const LoginButton = styled.button`
   &:hover {
     background-color: #282828;
     transform: scale(1.05);
-  }
-`;
-
-const RegButton = styled.button`
-  border: 0;
-  padding: 5px 15px;
-  border-radius: 3px;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: #c3c3c3;
-    transform: scale(1.05);
-    cursor: pointer;
   }
 `;
 
